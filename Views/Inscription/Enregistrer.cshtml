@@ -1,0 +1,62 @@
+@model ExamenCsharp.Models.ViewModels.InscriptionViewModel
+
+@{
+    ViewData["Title"] = "Enregistrer une inscription";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Enregistrer" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Matricule" class="form-label"></label>
+                <input asp-for="Matricule" class="form-control" />
+                <span asp-validation-for="Matricule" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Nom" class="form-label"></label>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Prenom" class="form-label"></label>
+                <input asp-for="Prenom" class="form-control" />
+                <span asp-validation-for="Prenom" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CodeClasse" class="form-label"></label>
+                <select asp-for="CodeClasse" asp-items="ViewBag.Classes" class="form-select">
+                    <option value="">-- Sélectionner une classe --</option>
+                </select>
+                <span asp-validation-for="CodeClasse" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Montant" class="form-label"></label>
+                <input asp-for="Montant" class="form-control" type="number" />
+                <span asp-validation-for="Montant" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a asp-action="Liste" class="btn btn-secondary">Voir les inscriptions</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
