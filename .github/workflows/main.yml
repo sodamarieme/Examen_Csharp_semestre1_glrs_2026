@@ -1,74 +1,50 @@
 # ========================================
-# EXEMPLE 4 : MULTI-OS (Multi-Plateformes)
+# EXEMPLE 1 : HELLO WORLD
 # ========================================
-# Ce workflow teste votre code sur PLUSIEURS
-# systèmes d'exploitation en même temps
+# Ce workflow est le plus simple possible.
+# Il affiche juste un message dans les logs.
 
-name: 04 - Multi OS
+# Nom du workflow (visible dans l'onglet Actions de GitHub)
+name: 01 - Hello World
 
+# Déclencheur : QUAND ce workflow doit-il s'exécuter ?
 on:
-  push:
-    branches: [ main ]
+  push:  # Quand on pousse du code
+    branches:
+      - main  # Seulement sur la branche "main"
+
+  # On peut aussi déclencher manuellement depuis l'interface GitHub
   workflow_dispatch:
 
+# Les tâches à exécuter (jobs)
 jobs:
-  # ================
-  # Test sur Ubuntu (Linux)
-  # ================
-  test-ubuntu:
+  # Premier job : dire-bonjour
+  # Le nom peut contenir des tirets mais pas d'espaces
+  dire-bonjour:
+
+    # Sur quel système d'exploitation exécuter ce job ?
+    # Options : ubuntu-latest, windows-latest, macos-latest
     runs-on: ubuntu-latest
 
+    # Les étapes de ce job
     steps:
-      - name: Test sur Ubuntu
+      # Étape 1 : Afficher un message simple
+      - name: Afficher bonjour
+        # La commande 'run' exécute des commandes shell
+        run: echo "👋 Bonjour depuis GitHub Actions !"
+
+      # Étape 2 : Afficher plusieurs informations
+      - name: Afficher des informations système
+        # Le symbole | permet d'écrire plusieurs lignes
         run: |
-          echo "🐧 Test sur Linux Ubuntu"
-          echo "Système : $(uname -s)"
-          echo "Version : $(uname -r)"
+          echo "📅 Date actuelle : $(date)"
+          echo "🖥️  Système : $(uname -s)"
+          echo "👤 Utilisateur : $(whoami)"
+          echo "📂 Dossier : $(pwd)"
 
-  # ================
-  # Test sur Windows
-  # ================
-  test-windows:
-    runs-on: windows-latest
-
-    steps:
-      - name: Test sur Windows
-        # Sur Windows, on utilise PowerShell
+      # Étape 3 : Afficher des variables GitHub
+      - name: Afficher des variables GitHub
         run: |
-          echo "🪟 Test sur Windows"
-          echo "Système : $env:OS"
-
-  # ================
-  # Test sur MacOS
-  # ================
-  test-macos:
-    runs-on: macos-latest
-
-    steps:
-      - name: Test sur MacOS
-        run: |
-          echo "🍎 Test sur MacOS"
-          echo "Système : $(uname -s)"
-
-  # ================
-  # MÉTHODE AVANCÉE : Matrix Strategy
-  # ================
-  # Cette méthode permet de tester sur plusieurs OS
-  # avec un seul job (plus efficace !)
-  test-matrix:
-    # Définir une matrice de systèmes d'exploitation
-    strategy:
-      matrix:
-        # Liste des OS à tester
-        os: [ubuntu-latest, windows-latest, macos-latest]
-
-    # Utiliser la variable de la matrice
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Test sur ${{ matrix.os }}
-        run: |
-          echo "🔧 Test sur ${{ matrix.os }}"
-          echo "Ceci s'exécute sur chaque OS !"
-
-# ASTUCE : La matrix strategy est plus efficace et facile à maintenir !
+          echo "📦 Dépôt : ${{ github.repository }}"
+          echo "🌿 Branche : ${{ github.ref }}"
+          echo "👨‍💻 Auteur : ${{ github.actor }}"
